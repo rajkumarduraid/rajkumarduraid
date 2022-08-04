@@ -1,0 +1,79 @@
+----------------------------------------------------------------------------------------------------------------------------------------
+
+SubString
+
+MyString.Substring(MyString.IndexOf("Invoice")+"Invoice".Length).Split(Environment.NewLine.ToCharArray)(0)
+----------------------------------------------------------------------------------------------------------------------------------------
+Directory
+
+Directory.GetFiles(myPathSt,"*.pdf"). OrderByDescending(Function(x) New FileInfo(x).CreationTime).ToList(0)
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Date
+
+Convert.ToDateTime(myGlobalFormDateSt).ToString("MM/dd/yyyy")
+
+DateTime.ParseExact(stYourDate,"dd/MM/yyyy",CultureInfo.InvariantCulture)
+----------------------------------------------------------------------------------------------------------------------------------------
+Substring
+
+
+st.Substring(st.IndexOf("TaxID: ")+"TaxID:".Length).Split(Environment.NewLine.ToCharArray)(0)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Initialization 
+
+new List(of String)
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Join
+
+String.Join(",",arrList).ToString
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+DataTable column to list
+ArrList = ( From row in dt.AsEnumerable() Select Convert.Tostring(row(“ColumnName”)) ).ToList()
+
+
+DataTable Single Row to list
+arrObjList = dtMyData.ItemArray.ToList
+
+
+DataTable_Like
+dtTest.Select("[Name] like 'Raj%'").CopyToDataTable()
+
+
+between
+InputDT.AsEnumerable.Where(Function (item) 5 < CInt (item("Class")) and 8 > Cint(item("Class"))).CopyToDataTable
+
+
+Get needed DataTable rows
+newDT.AsEnumerable().Take(2).CopyToDataTable()
+newDt.Select().Take(2).CopyToDataTable()
+
+
+
+
+Column concatenate via InvokeCode Activitie
+
+Dim row As DataRow
+dtTest.Columns.Add("D")
+For Each row In dtTest.Rows
+	row("D") = row("A").ToString+" "+row("B").ToString
+Next
+
+
+========================================================================================================================
+List 
+
+
+Remove Empty Value from List
+MyList.Where(Function(x) Not string.IsNullOrEmpty(x))
+----------------------------------------------------------------------------------------------------------------------------------------
