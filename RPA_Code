@@ -76,4 +76,9 @@ List
 
 Remove Empty Value from List
 MyList.Where(Function(x) Not string.IsNullOrEmpty(x))
+
+Double List convert to Int List
+MyList.asEnumerable().select(Function(z) CInt(math.round(convert.ToDecimal(z),2))).tolist()
+
+
 ----------------------------------------------------------------------------------------------------------------------------------------
