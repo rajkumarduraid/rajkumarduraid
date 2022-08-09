@@ -1,0 +1,45 @@
+How to get school student Categories using student Class
+
+
+---InPut Data----
+
+[S.No,Name,Class
+1,Zion,2
+2,Muthuraj,4
+3,Maeve,3
+4,Luca,5
+5,Nova,4
+6,Mia,5
+7,Aaliyah,6
+8,Mila,6
+9,Rajkumar,7
+10,Rajan,8
+]
+
+
+---Queries---
+
+(From row In InputDT
+Let SNo = row(0).tostring
+Let Name = row(1).tostring
+Let Std = row(2).tostring
+Let x = New Object() {SNo, Name, std,
+If (CInt(Std) > 0 And CInt(Std) <= 5,"Elementay School", If(CInt(Std) > 5 And CInt(Std) <= 8,"High",""))}
+Select Result.Rows.Add(x)).Copytodatatable
+
+---OutPut Data---
+
+[S.No,Name,Class,Category
+1,Zion,2,Elementay School
+2,Muthuraj,4,Elementay School
+3,Maeve,3,Elementay School
+4,Luca,5,Elementay School
+5,Nova,4,Elementay School
+6,Mia,5,Elementay School
+7,Aaliyah,6,High
+8,Mila,6,High
+9,Rajkumar,7,High
+10,Rajan,8,High
+]
+
+======================================================================================================================================================================
