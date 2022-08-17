@@ -3,6 +3,16 @@
 SubString
 
 MyString.Substring(MyString.IndexOf("Invoice")+"Invoice".Length).Split(Environment.NewLine.ToCharArray)(0)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+How to Get A Specific Value In The String using RegularExpressions
+InPut
+stValue = "114 Haziran 2022 16253 Carisi DROETKER GIDA SANTICAS Fatura Onayı ID_07062022095832"
+Code
+System.Text.RegularExpressions.Regex.Match(stValue,"(?<=2022\D+)\d+").Value
+Output
+"16253"
 ----------------------------------------------------------------------------------------------------------------------------------------
 Directory
 
