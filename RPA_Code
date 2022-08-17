@@ -70,6 +70,13 @@ For Each row In dtTest.Rows
 Next
 
 
+
+Sort data table in Ascending Order
+DT.AsEnumerable.OrderBy(Function(x) Cdbl(x("Price").ToString)).CopyToDataTable
+
+Sort data table in Descending Order
+DT.AsEnumerable.OrderByDescending(Function(x) Cdbl(x("Price").ToString)).CopyToDataTable
+
 ========================================================================================================================
 List 
 
