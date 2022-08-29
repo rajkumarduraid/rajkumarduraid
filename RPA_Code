@@ -87,6 +87,12 @@ DT.AsEnumerable.OrderBy(Function(x) Cdbl(x("Price").ToString)).CopyToDataTable
 Sort data table in Descending Order
 DT.AsEnumerable.OrderByDescending(Function(x) Cdbl(x("Price").ToString)).CopyToDataTable
 
+
+
+Column Sum Amount
+
+dt_FilteredNature.AsEnumerable.Sum(Function (x) If(Double.TryParse(x.item("ColumnName").ToString, Nothing), Double.Parse(x.Item("ColumnName").ToString), 0)).ToString
+
 ========================================================================================================================
 List 
 
