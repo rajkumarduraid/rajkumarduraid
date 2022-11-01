@@ -95,6 +95,9 @@ Column Sum Amount
 
 dt_FilteredNature.AsEnumerable.Sum(Function (x) If(Double.TryParse(x.item("ColumnName").ToString, Nothing), Double.Parse(x.Item("ColumnName").ToString), 0)).ToString
 
+
+Filter Datatable
+(from row in dt where row(“Col1”).tostring=“Ma Do’na” select row).copytodatatable
 ========================================================================================================================
 List 
 
