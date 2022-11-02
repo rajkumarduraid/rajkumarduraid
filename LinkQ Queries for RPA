@@ -43,3 +43,11 @@ Select Result.Rows.Add(x)).Copytodatatable
 ]
 
 ======================================================================================================================================================================
+How to replace column value in datatable
+
+---Queries---
+(From r In negativeRmvdDT.AsEnumerable
+Let ra = If(IsNumeric(r(columnName).ToString),CStr(Math.Abs(CDec(r(columnName).ToString))),r(columnName).ToString)
+Let ss = out_dtCorrected.Rows(negativeRmvdDT.Rows.IndexOf(r)).ItemArray.Append(ra).ToArray
+Select tempDT.Rows.Add(ss)).CopyToDataTable()
+
