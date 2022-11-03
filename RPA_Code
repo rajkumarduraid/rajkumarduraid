@@ -18,6 +18,8 @@ Directory
 
 Directory.GetFiles(myPathSt,"*.pdf"). OrderByDescending(Function(x) New FileInfo(x).CreationTime).ToList(0)
 
+Directory.GetFiles("D:\TestFolder","*.*",SearchOption.AllDirectories)
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 Date
 
