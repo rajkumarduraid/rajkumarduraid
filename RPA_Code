@@ -28,6 +28,8 @@ Convert.ToDateTime(myGlobalFormDateSt).ToString("MM/dd/yyyy")
 DateTime.ParseExact(stTest,"dd/MM/yyyy",system.Globalization.CultureInfo.InvariantCulture)
 
 DateTime.ParseExact(stYourDate,"dd/MM/yyyy",CultureInfo.InvariantCulture)
+
+DateDiff(DateInterval.Day, “2016-01-30”,“2016-01-30”)
 ----------------------------------------------------------------------------------------------------------------------------------------
 Substring
 
