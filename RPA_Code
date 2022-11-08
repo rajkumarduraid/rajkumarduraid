@@ -1,8 +1,13 @@
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-SubString
+String
 
+
+SubString
 MyString.Substring(MyString.IndexOf("Invoice")+"Invoice".Length).Split(Environment.NewLine.ToCharArray)(0)
+
+How to remove Empty line from String ?
+st.Replace(st.Split(vbLf)(1),"").Split({CChar(vbLf)},StringSplitOptions.RemoveEmptyEntries)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
