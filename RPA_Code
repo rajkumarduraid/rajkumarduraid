@@ -103,6 +103,9 @@ dt_FilteredNature.AsEnumerable.Sum(Function (x) If(Double.TryParse(x.item("Colum
 Filter Datatable
 (from row in dt where row(“Col1”).tostring=“Ma Do’na” select row).copytodatatable
 
+Distinct value with all columns
+dt.AsEnumerable().GroupBy(Function(x) x.Field(Of String)("ColumnName")).Select(Function(y) y.First).CopyToDataTable
+
 ========================================================================================================================
 List 
 
