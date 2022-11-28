@@ -1,0 +1,29 @@
+Dim XLApp As Microsoft.Office.Interop.Excel.Application
+Dim XLWb  As Microsoft.Office.Interop.Excel.Workbook
+Dim XLWbs As Microsoft.Office.Interop.Excel.Worksheet
+Dim XLRange As Microsoft.Office.Interop.Excel.Range
+Dim XlRange2  As   Microsoft.Office.Interop.Excel.Range
+Dim newcell  As   Microsoft.Office.Interop.Excel.Range
+Dim newcelll  As   Microsoft.Office.Interop.Excel.Range
+Dim totalrows As Int32,i As Int32
+Dim rangeArray(), tempRange,startCol,endCol,Startcoll,endcoll As String
+XLApp=New Microsoft.Office.Interop.Excel.ApplicationClass
+XLWb=XLApp.Workbooks.Open(In_FileName)
+XLWbs=CType(XlWb.Worksheets(In_SheetName),Microsoft.Office.Interop.Excel.WorkSheet)
+totalrows=XlWbs.UsedRange.Rows.Count
+
+
+	startCol=in_Range.Split(CChar(":"))(0)
+	endCol=in_Range.Split(CChar(":"))(1)
+    
+	XLRange= XlWbs.Range(startCol+"2",endCol+totalrows.ToString)
+ 
+	For Each newcell In XLRange.Cells
+	If IsNumeric(newcell.Value) Then
+		Else
+		newcell.Interior.ColorIndex=6
+End If 
+Next  newcell
+XLWb.Save()
+XLWb.Close()
+XLApp.Quit()
