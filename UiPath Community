@@ -1,0 +1,36 @@
+Remove rows based on particular column is empty.
+
+DataTableName.Select("Convert(column3, System.String)< >''").CopyToDataTable()
+or
+DataTableName.Select("column3< >''").CopyToDataTable()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Distinct Based on the specific column name from the data table and need to return the hole data.
+Remove Duplicate record from the Data Table based on Column Name
+
+dt.AsEnumerable().GroupBy(Function(i) i.Field(Of String)("ColumnName")).Select(Function(g) g.First).CopyToDataTable()
+Or
+((From LineNo In dt.DefaultView.ToTable(True,"Product").Select().ToList() Select (From row In dt.Select Where row("Product").ToString=LineNo("Product").ToString Select row).ToList(0)).ToList()).CopyToDatatable()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Distinct Based on the specific column name from the data table.
+
+DataView view = new DataView(table)
+DataTable distinctValues = view.ToTable(true, "Column1", "Column2" ...)
+or
+DataTable =DataTable.DefaultView.ToTable(true)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorting the data table based on particular column name
+
+dt = dt.Select("",[ColumnName] asc").CopyToDataTable()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Duplicate records from the same data table
+
+(From p in dt.Select() where( From q in dt.Select() where string.Join(",",q.ItemArray).Equals(string.Join(",",p.ItemArray)) Select q).ToArray.Count>1 Select p).ToArray.CopyToDataTable()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Duplicate records from the same data table and
+If you want specific Column alone mention the column name
+
+(From p in dt.Select() where( From q in dt.Select() where q("ColumnName").Equals(p("ColumnName")) Select q).ToArray.Count>1 Select p).ToArray.CopyToDataTable()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Get Max value from the data table column value
+
+int MaxValue=Convert.ToInt32(dt.AsEnumerable().Max(Function(row) row("Column2")))
