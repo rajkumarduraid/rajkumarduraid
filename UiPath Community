@@ -34,3 +34,14 @@ If you want specific Column alone mention the column name
 Get Max value from the data table column value
 
 int MaxValue=Convert.ToInt32(dt.AsEnumerable().Max(Function(row) row("Column2")))
+
+#################################################################################################################################################################################
+String
+
+Lower to Upper and Upper to Lower
+
+stInput = "heLLo WOrLd"
+String.Join("",stInput.Select(Function (x) If(Char.IsLower(x), x.tostring.toupper, x.toString.tolower)))
+Output = "HEllO woRlD"
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
