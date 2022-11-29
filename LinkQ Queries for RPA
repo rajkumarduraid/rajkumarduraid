@@ -52,4 +52,6 @@ Let xx = r("Course").ToString
 Select dt.Clone.Rows.Add(String.Join(",",r.ItemArray).ToString.Replace(xx,ra).Split(CChar(",")))).CopyToDataTable()
 
 ======================================================================================================================================================================
+Where Example
 
+dt.AsEnumerable.Where(Function(x) Not String.IsNullOrEmpty(x("Col1").ToString)).CopyToDataTable
