@@ -113,6 +113,15 @@ Filter Datatable
 Distinct value with all columns
 dt.AsEnumerable().GroupBy(Function(x) x.Field(Of String)("ColumnName")).Select(Function(y) y.First).CopyToDataTable
 
+Closed Excel
+Step1:
+WB = New ClosedXML.Excel.XLWorkbook("C:\Users\Fasoftwares\Documents\UiPath\Timesheet_Validation\Config\Config.xlsx")
+Step2:
+SheetNames = WB.Worksheets
+Datatypes:
+WB ==> ClosedXML.Excel.XLWorkbook
+SheetNames ==> ClosedXML.Excel.IXLWorksheets
+
 ========================================================================================================================
 List 
 
