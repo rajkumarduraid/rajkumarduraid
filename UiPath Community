@@ -43,5 +43,15 @@ Lower to Upper and Upper to Lower
 stInput = "heLLo WOrLd"
 String.Join("",stInput.Select(Function (x) If(Char.IsLower(x), x.tostring.toupper, x.toString.tolower)))
 Output = "HEllO woRlD"
+###########################################################################################################################################################################################
+
+For eg. If name John available in DT1 and DT2 “name” column we need to put that entire DT1 row in D3
+
+(From d in dt1.AsEnumerable
+Let n = d("Name").toString.Trim
+Where dt2.AsEnumerable.Any(Function (d2) d2("Name").ToString.Trim.Equals(n))
+Select r = d).CopyToDataTable
+
+###########################################################################################################################################################################################
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
