@@ -2,6 +2,7 @@
 
 String
 
+st.split("-",2,stringsplitoptions.none)
 
 SubString
 MyString.Substring(MyString.IndexOf("Invoice")+"Invoice".Length).Split(Environment.NewLine.ToCharArray)(0)
@@ -164,7 +165,29 @@ Where
 Queueitems.Where(function(x) x.Reference.Equals("Whtever you want to check")).Count > 0 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
+Group
 
+input
+[date,records
+22-sept-22.xlsx,1
+23-sept-22.xlsx,2
+01-oct-22.xlsx,1
+10-oct-22.xlsx,1
+01-Jan-23.xlsx,1
+02-Jan-23.xlsx,1
+]
+
+Output
+
+[date,records
+sept-22.xlsx,3
+oct-22.xlsx,2
+Jan-23.xlsx,2
+]
+
+(From item In dt.AsEnumerable
+Group item By col1 = item("date").ToString.split("-",2,stringsplitoptions.none)(1) Into Group 
+Select dt.Clone.Rows.Add(col1,Group.sum(Function(x) CInt(x("records").ToString)))).CopyToDataTable
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
