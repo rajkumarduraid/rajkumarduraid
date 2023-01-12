@@ -190,7 +190,9 @@ Group item By col1 = item("date").ToString.split("-",2,stringsplitoptions.none)(
 Select dt.Clone.Rows.Add(col1,Group.sum(Function(x) CInt(x("records").ToString)))).CopyToDataTable
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
+How to get specific month saturday date list
 
+Enumerable.Range(1,DateTime.DaysInMonth(2022,12)).Select(function(d) new DateTime(2022,12,d)).Where(function(x) x.DayOfWeek=DayOfWeek.Saturday).ToList()
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
