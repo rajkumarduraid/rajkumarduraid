@@ -1,61 +1,66 @@
-import pandas as pd
 from pptx import Presentation
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 from pptx.enum.shapes import MSO_SHAPE
+from pptx.dml.color import RGBColor
 
-def create_simple_hierarchy():
-    # Read Excel file
-    df = pd.read_excel('employees.xlsx')
-    
-    # Create PowerPoint
+def create_org_chart_ppt(root_nodes, output_filename="org_chart.pptx"):
+    # Initialize presentation
     prs = Presentation()
-    slide = prs.slides.add_slide(prs.slide_layouts[5])  # Blank slide
-    
-    # Position settings
-    x_start = Inches(1)
-    y_start = Inches(1)
+    slide_layout = prs.slide_layouts[5]  # Blank slide
+    slide = prs.slides.add_slide(slide_layout)
+
+    # Positioning parameters
+    start_x = Inches(4)  # Centered horizontally
+    start_y = Inches(1)  # Top margin
+    level_spacing_y = Inches(1.5)  # Vertical spacing between levels
+    node_spacing_x = Inches(2)  # Horizontal spacing between nodes
+
+    # Styling
     box_width = Inches(2)
     box_height = Inches(1)
-    vertical_gap = Inches(1.5)
-    horizontal_gap = Inches(3)
-    
-    # Track positions
-    levels = {}
-    
-    # Create boxes
-    for _, row in df.iterrows():
-        manager = row['Manager Name']
-        employee = row['Reporting Name']
-        
-        # Create employee box
-        if employee not in levels:
-            levels[employee] = len(levels) + 1
-        y = y_start + (levels[employee] * vertical_gap)
-        add_box(slide, employee, x_start + (levels[employee] * horizontal_gap), y, box_width, box_height)
-        
-        # Create manager box if needed
-        if manager not in levels:
-            levels[manager] = 0
-            add_box(slide, manager, x_start, y_start, box_width, box_height)
-        
-        # Connect boxes
-        connect_boxes(slide, manager, employee, levels, x_start, y_start, horizontal_gap, vertical_gap, box_width, box_height)
-    
-    prs.save('simple_hierarchy.pptx')
-    print("PPT created successfully!")
+    font_size = Pt(12)
 
-def add_box(slide, text, x, y, width, height):
-    shape = slide.shapes.add_shape(
-        MSO_SHAPE.RECTANGLE,
-        x, y, width, height
-    )
-    shape.text = text
-    shape.fill.solid()
-    shape.fill.fore_color.rgb = (79, 129, 189)  # Blue color
-    shape.line.color.rgb = (0, 0, 0)  # Black border
+    # Recursive function to place nodes
+    def add_node(parent_shape, node, level, x, sibling_count=0):
+        # Create a shape for the current node
+        left = x - box_width / 2
+        top = start_y + (level * level_spacing_y)
+        shape = slide.shapes.add_shape(
+            MSO_SHAPE.ROUNDED_RECTANGLE, left, top, box_width, box_height
+        )
+        shape.text = f"{node['name']}\n({node['position']})"
+        text_frame = shape.text_frame
+        text_frame.paragraphs[0].font.size = font_size
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = RGBColor(173, 216, 230)  # Light blue
 
-def connect_boxes(slide, manager, employee, levels, x_start, y_start, h_gap, v_gap, width, height):
-    # Calculate positions
-    manager_x = x_start + (levels[manager] * h_gap)
-    manager_y = y_start + (levels[manager] * v_gap)
-    employee_x = x
+        # Draw connector to parent (if not root)
+        if parent_shape:
+            connector = slide.shapes.add_connector(
+                MSO_SHAPE.STRAIGHT_CONNECTOR,
+                parent_shape.left + parent_shape.width / 2,
+                parent_shape.top + parent_shape.height,
+                shape.left + shape.width / 2,
+                shape.top
+            )
+            connector.line.width = Pt(1)
+
+        # Position children recursively
+        num_children = len(node["children"])
+        if num_children > 0:
+            total_width = num_children * node_spacing_x
+            first_child_x = x - (total_width / 2) + (node_spacing_x / 2)
+            for i, child in enumerate(node["children"]):
+                child_x = first_child_x + (i * node_spacing_x)
+                add_node(shape, child, level + 1, child_x, num_children)
+
+    # Start with root nodes
+    for root in root_nodes:
+        add_node(None, root, level=0, x=start_x)
+
+    # Save the presentation
+    prs.save(output_filename)
+    print(f"PPT saved as {output_filename}")
+
+# Run the function
+create_org_chart_ppt(root_nodes)
