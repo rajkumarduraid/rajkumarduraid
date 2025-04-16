@@ -27,3 +27,119 @@ Next  newcell
 XLWb.Save()
 XLWb.Close()
 XLApp.Quit()
+
+
+
+
+import pandas as pd
+from pptx import Presentation
+from pptx.util import Inches
+from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
+from pptx.enum.text import PP_ALIGN
+from pptx.dml.color import RGBColor
+
+class Node:
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+        self.x = 0.0  # X-coordinate (inches)
+        self.y = 0.0  # Y-coordinate (inches)
+
+def build_tree(name, hierarchy):
+    """Recursively build the tree from the hierarchy dictionary."""
+    node = Node(name)
+    if name in hierarchy:
+        for child_name in hierarchy[name]:
+            child_node = build_tree(child_name, hierarchy)
+            node.children.append(child_node)
+    return node
+
+def assign_positions(node, current_x, level_width, y, vertical_spacing):
+    """Assign positions to nodes recursively."""
+    node.x = current_x + (level_width / 2)
+    node.y = y
+    num_children = len(node.children)
+    if num_children == 0:
+        return
+    child_level_width = level_width / num_children
+    for i, child in enumerate(node.children):
+        child_current_x = current_x + (i * child_level_width)
+        assign_positions(child, child_current_x, child_level_width, y + vertical_spacing, vertical_spacing)
+
+def create_hierarchy_ppt(input_excel_path, output_ppt_path):
+    # Read Excel data
+    df = pd.read_excel(input_excel_path)
+    
+    # Build hierarchy dictionary
+    hierarchy = {}
+    reportees = set()
+    for _, row in df.iterrows():
+        manager = row['Manager Name'].strip()
+        reportee = row['Reporting Name'].strip()
+        if manager not in hierarchy:
+            hierarchy[manager] = []
+        hierarchy[manager].append(reportee)
+        reportees.add(reportee)
+    
+    # Find root(s)
+    roots = [manager for manager in hierarchy if manager not in reportees]
+    
+    # Build tree structure
+    nodes = []
+    for root_name in roots:
+        root_node = build_tree(root_name, hierarchy)
+        nodes.append(root_node)
+    
+    # Create PowerPoint presentation
+    prs = Presentation()
+    slide = prs.slides.add_slide(prs.slide_layouts[5])  # Blank slide
+    
+    # Define layout parameters
+    slide_width = 13.33  Inches
+    vertical_spacing = 1.2  # Vertical space between levels
+    shape_width, shape_height = 2.0, 0.7  # Size of each rectangle
+    
+    # Assign positions to all nodes
+    all_nodes = []
+    y_start = 1.0  # Starting Y position
+    for root_node in nodes:
+        assign_positions(root_node, 0, slide_width, y_start, vertical_spacing)
+        queue = [root_node]
+        while queue:
+            node = queue.pop(0)
+            all_nodes.append(node)
+            queue.extend(node.children)
+    
+    # Add shapes and connectors
+    for node in all_nodes:
+        # Add rectangle for the node
+        left = Inches(node.x - shape_width / 2)
+        top = Inches(node.y - shape_height / 2)
+        shape = slide.shapes.add_shape(
+            MSO_SHAPE.ROUNDED_RECTANGLE,
+            left, top, Inches(shape_width), Inches(shape_height)
+        shape.text = node.name
+        shape.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = RGBColor(0x2A, 0x8C, 0x46)  # Green
+        shape.line.color.rgb = RGBColor(0x00, 0x00, 0x00)  # Black
+    
+    for node in all_nodes:
+        for child in node.children:
+            # Add connector from parent to child
+            start_x = node.x
+            start_y = node.y + (shape_height / 2)
+            end_x = child.x
+            end_y = child.y - (shape_height / 2)
+            connector = slide.shapes.add_connector(
+                MSO_CONNECTOR.STRAIGHT,
+                Inches(start_x), Inches(start_y),
+                Inches(end_x), Inches(end_y)
+            )
+            connector.line.width = Inches(0.02)
+            connector.line.color.rgb = RGBColor(0x00, 0x00, 0x00)
+    
+    prs.save(output_ppt_path)
+
+if __name__ == "__main__":
+    create_hierarchy_ppt("input.xlsx", "hierarchy.pptx")
